@@ -71,7 +71,14 @@ function getMarkupModel (markupArray) {
                 element['dataSet'] = {};
               }
               let [dataSetKey, dataSetValue] = elementComponent.split('=');
-              element.dataSet[dataSetKey.replace('data-', '')] = dataSetValue.replaceAll('"', '');
+              dataSetKey = dataSetKey
+                .replace('data-', '')
+                .split('-')
+                .map((segment, i) => (i === 0)
+                  ? segment
+                  : segment.at(0).toUpperCase() + segment.slice(1))
+                .join('');
+              element.dataSet[dataSetKey] = dataSetValue.replaceAll('"', '');
             break; 
               
             case (elementComponent.includes('=')):
@@ -153,6 +160,13 @@ function getMarkupScript (markupModel) {
       Object.entries(element.attributes).forEach((attributeEntry) => {
         markupScript += indent.repeat(indentIndex);
         markupScript += `${elementName}.setAttribute('${attributeEntry[0]}', '${attributeEntry[1]}');\n`;
+      });
+    }
+
+    if (Object.hasOwn(element, 'dataSet')) {
+      Object.entries(element.dataSet).forEach((dataSetEntry) => {
+        markupScript += indent.repeat(indentIndex);
+        markupScript += `${elementName}.dataset.${dataSetEntry[0]} = '${dataSetEntry[1]}';\n`;
       });
     }
 
