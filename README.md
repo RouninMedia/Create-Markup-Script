@@ -238,9 +238,9 @@ let markup = `
   <footer class="footer">
     <nav class="footerNav">
       <ul class="footerButtonList">
-        <li class="footerButtonListItem"><button class="footerButton --about" type="button" data-setting="unlocked">About</button></li>
-        <li class="footerButtonListItem"><button class="footerButton --demos" type="button" data-setting="locked" disabled>Demos</button></li>
-        <li class="footerButtonListItem"><button class="footerButton --credits" type="button" data-setting="unlocked">Credits</button></li>
+        <li class="footerButtonListItem"><button class="footerButton --about" type="button" data-lock-setting="unlocked">About</button></li>
+        <li class="footerButtonListItem"><button class="footerButton --demos" type="button" data-lock-setting="locked" disabled>Demos</button></li>
+        <li class="footerButtonListItem"><button class="footerButton --credits" type="button" data-lock-setting="unlocked">Credits</button></li>
       </ul>
     </nav> 
   </footer>
