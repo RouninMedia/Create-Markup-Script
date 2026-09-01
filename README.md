@@ -160,52 +160,57 @@ function getMarkupScript (markupModel) {
 
     const elementName = `${element.elementType}_${elementTypeIndex}`;
 
-    markupScript += indent.repeat(indentIndex);
-    markupScript += `const ${elementName} = document.createElement('${element.elementType}');\n`;
-
-    if (Object.hasOwn(element, 'classList')) {
-      element.classList.forEach((className) => {
-        markupScript += indent.repeat(indentIndex);
-        markupScript += `${elementName}.classList.add('${className}');\n`;
-      });
-    }
-
-    if (Object.hasOwn(element, 'attributes')) {
-      Object.entries(element.attributes).forEach((attributeEntry) => {
-        markupScript += indent.repeat(indentIndex);
-        markupScript += `${elementName}.setAttribute('${attributeEntry[0]}', '${attributeEntry[1]}');\n`;
-      });
-    }
-
-    if (Object.hasOwn(element, 'dataSet')) {
-      Object.entries(element.dataSet).forEach((dataSetEntry) => {
-        markupScript += indent.repeat(indentIndex);
-        markupScript += `${elementName}.dataset.${dataSetEntry[0]} = '${dataSetEntry[1]}';\n`;
-      });
-    }
-
-    if ((Object.hasOwn(element, 'childElements')) && (element.childElements.length > 0)) {
-      parentNodes.push(elementName);
-      indentIndex++;
-      markupScript += `\n`;
-      getMarkupScript(element.childElements);
-      parentNodes.pop(elementName);
-      indentIndex--;
-    }
-
-    if (indentIndex > 0) {
+    if (element.elementType === 'textNode') {
+      markupScript += indent.repeat(indentIndex);
+      markupScript += `const ${elementName} = document.createTextNode('${element.textContent}');\n`;
       markupScript += indent.repeat(indentIndex);
       markupScript += `${parentNodes.at(-1)}.appendChild(${elementName});\n\n`;
     } else {
       markupScript += indent.repeat(indentIndex);
-      markupScript += `document.body.appendChild(${elementName});\n\n\n`;
-    }
+      markupScript += `const ${elementName} = document.createElement('${element.elementType}');\n`;
 
+      if (Object.hasOwn(element, 'classList')) {
+        element.classList.forEach((className) => {
+          markupScript += indent.repeat(indentIndex);
+          markupScript += `${elementName}.classList.add('${className}');\n`;
+        });
+      }
+
+      if (Object.hasOwn(element, 'attributes')) {
+        Object.entries(element.attributes).forEach((attributeEntry) => {
+          markupScript += indent.repeat(indentIndex);
+          markupScript += `${elementName}.setAttribute('${attributeEntry[0]}', '${attributeEntry[1]}');\n`;
+        });
+      }
+
+      if (Object.hasOwn(element, 'dataSet')) {
+        Object.entries(element.dataSet).forEach((dataSetEntry) => {
+          markupScript += indent.repeat(indentIndex);
+          markupScript += `${elementName}.dataset.${dataSetEntry[0]} = '${dataSetEntry[1]}';\n`;
+        });
+      }
+
+      if ((Object.hasOwn(element, 'childElements')) && (element.childElements.length > 0)) {
+        parentNodes.push(elementName);
+        indentIndex++;
+        markupScript += `\n`;
+        getMarkupScript(element.childElements);
+        parentNodes.pop(elementName);
+        indentIndex--;
+      }
+
+      if (indentIndex > 0) {
+        markupScript += indent.repeat(indentIndex);
+        markupScript += `${parentNodes.at(-1)}.appendChild(${elementName});\n\n`;
+      } else {
+        markupScript += indent.repeat(indentIndex);
+        markupScript += `document.body.appendChild(${elementName});\n\n\n`;
+      }
+    }
   });
 
   return markupScript;
 }
-
 
 function createMarkupScript (markup) {
   // LOG MARKUP
