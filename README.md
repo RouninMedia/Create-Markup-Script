@@ -121,7 +121,15 @@ function getMarkupModel (markupArray) {
         if (markupElement.endsWith('/>')) {
           indentLevel--; 
         }
-      break;  
+      break;
+
+      // TEXT NODES
+      case (!markupElement.startsWith('<')):
+        indentLevel++;
+        let textNodeParent = getParentElement(markupModel, indentLevel);
+        textNodeParent.push({elementType: 'textNode', textContent: markupElement});
+        indentLevel--;
+      break;
     }
   });
 
