@@ -22,6 +22,21 @@ function getMarkupArray (markupString) {
 }
 
 
+// FUNCTION :: GET PARENT ELEMENT
+function getParentElement (markupModel, indentLevel) {
+  parentElement = markupModel;
+  if (indentLevel > 0) {
+    let i = 0;
+    while (i < indentLevel) {
+      parentElement = parentElement.findLast((element) => element.indentLevel === i);
+      parentElement = parentElement.childElements; 
+      i++;
+    }
+  }
+  return parentElement;
+}
+
+
 // FUNCTION :: GET MARKUP MODEL
 function getMarkupModel (markupArray) {
   let indentLevel = -1;
