@@ -115,17 +115,8 @@ function getMarkupModel (markupArray) {
           element['childElements'] = [];
         });
 
-        let ancestorElement = markupModel;
-        if (indentLevel > 0) {
-          let i = 0;
-          while (i < indentLevel) {
-            ancestorElement = ancestorElement.findLast((element) => element.indentLevel === i);
-            ancestorElement = ancestorElement.childElements; 
-            i++;
-          }
-        }
-
-        ancestorElement.push(element);
+        let elementParent = getParentElement(markupModel, indentLevel);
+        elementParent.push(element);
 
         if (markupElement.endsWith('/>')) {
           indentLevel--; 
