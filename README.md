@@ -254,7 +254,7 @@ let markup = `
   </main>
 
 
-  <footer class="footer">
+  <footer id="footer" class="footer">
     <nav class="footerNav">
       <ul class="footerButtonList">
         <li class="footerButtonListItem"><button class="footerButton --about" type="button" data-lock-setting="unlocked">About</button></li>
@@ -265,6 +265,7 @@ let markup = `
   </footer>
 `;
 
-```
 
-    createMarkupScript(markup);
+createMarkupScript(markup);
+
+```
