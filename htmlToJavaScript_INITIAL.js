@@ -1,0 +1,134 @@
+// 131 lines
+
+function htmlToJavaScript(html, rootVariable = 'container') {
+  const parser = new DOMParser();
+  const document = parser.parseFromString(
+    `<div id='__html_to_js_root__'>${html}</div>`,
+    'text/html'
+  );
+
+  const root = document.getElementById('__html_to_js_root__');
+  const lines = [];
+  let variableCounter = 0;
+
+  function nextVariable() {
+    variableCounter++;
+    return `el${variableCounter}`;
+  }
+
+  function jsString(value) {
+    return JSON.stringify(value);
+  }
+
+  function dataAttributeToDatasetProperty(attributeName) {
+    return attributeName
+      .slice(5)
+      .split('-')
+      .map((part, index) => {
+        if (index === 0) {
+          return part;
+        }
+
+        return part.charAt(0).toUpperCase() + part.slice(1);
+      })
+      .join('');
+  }
+
+  function isValidDatasetProperty(property) {
+    return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(property);
+  }
+
+  function emitAttribute(elementVariable, attribute) {
+    const name = attribute.name;
+    const value = attribute.value;
+
+    if (name === 'class') {
+      const classes = value.match(/\S+/g) || [];
+      for (const className of classes) {
+        lines.push(
+          `${elementVariable}.classList.add(${jsString(className)});`
+        );
+      }
+      return;
+    }
+
+    if (name === 'id') {
+      lines.push(
+        `${elementVariable}.id = ${jsString(value)};`
+      );
+
+      return;
+    }
+
+    if (name.startsWith('data-')) {
+      const property = dataAttributeToDatasetProperty(name);
+
+      if (isValidDatasetProperty(property)) {
+        lines.push(
+          `${elementVariable}.dataset.${property} = ${jsString(value)};`
+        );
+      } else {
+        lines.push(
+          `${elementVariable}.setAttribute(${jsString(name)}, ${jsString(value)});`
+        );
+      }
+
+      return;
+    }
+
+    lines.push(
+      `${elementVariable}.setAttribute(${jsString(name)}, ${jsString(value)});`
+    );
+  }
+
+  function emitNode(node, parentVariable) {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const variable = nextVariable();
+
+      lines.push(
+        `const ${variable} = document.createElement(${jsString(node.tagName.toLowerCase())});`
+      );
+
+      for (const attribute of node.attributes) {
+        emitAttribute(variable, attribute);
+      }
+
+      lines.push(
+        `${parentVariable}.appendChild(${variable});`
+      );
+
+      for (const child of node.childNodes) {
+        emitNode(child, variable);
+      }
+
+      return;
+    }
+
+    if (node.nodeType === Node.TEXT_NODE) {
+
+      if (node.nodeValue !== '') {
+        lines.push(
+          `${parentVariable}.appendChild(document.createTextNode(${jsString(node.nodeValue)}));`
+        );
+      }
+
+      return;
+    }
+
+    if (node.nodeType === Node.COMMENT_NODE) {
+      lines.push(
+        `${parentVariable}.appendChild(document.createComment(${jsString(node.nodeValue)}));`
+      );
+
+      return;
+    }
+  }
+
+
+  for (const child of root.childNodes) {
+    if ((child.nodeType === Node.TEXT_NODE) && (/^[\t\n\f\r ]*$/.test(child.nodeValue))) continue;
+    emitNode(child, rootVariable);
+  }
+
+  return lines.join("\n");
+}
