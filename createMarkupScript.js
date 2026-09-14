@@ -232,3 +232,34 @@ function createMarkupScript (markup) {
   console.log(' ');
   console.log(markupScript);
 }
+
+
+// MARKUP
+let markup = `
+  <header class="header">
+    <h1 class="pageHeading">My Main Heading</h1>
+    <img class="pageLogo" src="/path/to/page-logo.png" />
+  </header>
+
+  <main class="main">  
+   <h2 class="mainHeading">My Subheading</h2>
+   <p class="mainParagraph">This is a paragraph.</p>
+   <p class="mainParagraph">This is <em class="emphasisedText">another</em> paragraph.</p>
+   <p class="mainParagraph">This is <em class="emphasisedText"><b class="boldText">a third</b></em> paragraph.</p>
+   <p class="mainParagraph" hidden>This is a hidden fourth paragraph.</p>
+  </main>
+
+
+  <footer id="footer" class="footer">
+    <nav class="footerNav">
+      <ul class="footerButtonList">
+        <li class="footerButtonListItem"><button class="footerButton --about" type="button" data-lock-setting="unlocked">About</button></li>
+        <li class="footerButtonListItem"><button class="footerButton --demos" type="button" data-lock-setting="locked" disabled>Demos</button></li>
+        <li class="footerButtonListItem"><button class="footerButton --credits" type="button" data-lock-setting="unlocked">Credits</button></li>
+      </ul>
+    </nav> 
+  </footer>
+`;
+
+// RUN SCRIPT
+createMarkupScript(markup);
