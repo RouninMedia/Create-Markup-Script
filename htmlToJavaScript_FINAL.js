@@ -13,7 +13,7 @@
 // 7) Having substantially understood the generated code, sixteen more minutes tidying it up / refactoring it
 // 8) Finally: twenty minutes to study / re-engineer / re-write an idiosyncratic and convoluted setup involving a single-use function parameter
 //
-// That's one hour in total which is about a quarter of the time the original, hand-coded script took to develop.
+// That's one hour in total which is less than a quarter of the four-and-a-half hours the original hand-coded script took to develop.
 
 
 function htmlToJavaScript(html, elementParent = 'document.body') {
