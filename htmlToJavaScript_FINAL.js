@@ -4,17 +4,18 @@
 // After editing / refactoring, the script below is 63 lines.
 //
 // This entire process took:
-// Four seconds to generate
-// Four minutes to tidy up
-// Six minutes to debug (two approaches, neither worked)
-// Two minutes to vibe-debug (successfully)
-// Two minutes to check
-// Ten minutes to read, cognitively dissect and understand the generated code
-// Having substantially understood the generated code, sixteen more minutes tidying it up / refactoring it
-// Finally: twenty minutes to study / re-engineer / re-write an idiosyncratic and convoluted setup involving a single-use function parameter
+// 1) Four seconds to generate
+// 2) Four minutes to tidy up
+// 3) Six minutes to debug (two approaches, neither worked)
+// 4) Two minutes to vibe-debug (successfully)
+// 5) Two minutes to check
+// 6) Ten minutes to read, cognitively dissect and understand the generated code
+// 7) Having substantially understood the generated code, sixteen more minutes tidying it up / refactoring it
+// 8) Finally: twenty minutes to study / re-engineer / re-write an idiosyncratic and convoluted setup involving a single-use function parameter
+//
+// That's one hour in total which is about a quarter of the time the original, hand-coded script took to develop.
 
 
-// 63 LINES
 function htmlToJavaScript(html, elementParent = 'document.body') {
   const parser = new DOMParser();
   const document = parser.parseFromString(`<div id='__html_to_js__'>${html}</div>`, 'text/html');
