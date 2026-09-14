@@ -1,3 +1,11 @@
+// This is the hand-coded version of the Create Markup Script.
+// The script below was entirely developed by hand and contains 208 lines.
+//
+// This entire process took:
+// 1) Four and a half hours to develop and test.
+
+
+
 // FUNCTION :: GET MARKUP STRING
 function getMarkupString (markup) {
   return markup
